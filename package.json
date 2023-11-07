@@ -1,0 +1,14 @@
+{
+  "name": "tictactoe",
+  "version": "1.0.0",
+  "description": "Tic Tac Toe Cli",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Addul Qawi",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
