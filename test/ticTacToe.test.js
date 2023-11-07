@@ -204,7 +204,7 @@ test(`Game Draw Test`, () => {
     ticTacToe.setBoxValue(2, 1, 'X')
     ticTacToe.setBoxValue(2, 2, 'O')
 
-    expect(ticTacToe.checkIsGamenDraw()).toBe(true)
+    expect(ticTacToe.checkIsGameDraw()).toBe(true)
     expect(ticTacToe.checkIsPlayerWon('X')).toBe(false)
     expect(ticTacToe.checkIsPlayerWon('O')).toBe(false)
 });
@@ -226,6 +226,6 @@ test(`Game Win Test`, () => {
 
     expect(ticTacToe.checkIsPlayerWon('X')).toBe(true)
     expect(ticTacToe.checkIsPlayerWon('O')).toBe(false)
-    expect(ticTacToe.checkIsGamenDraw()).toBe(true)
+    expect(ticTacToe.checkIsGameDraw()).toBe(true)
 
 });
