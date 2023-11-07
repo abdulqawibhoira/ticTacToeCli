@@ -30,12 +30,14 @@ test(`Prints an empty Grid. Grid with just boxIds`, () => {
 
 4 | 5 | 6 | 
 
-7 | 8 | 9 | `;
+7 | 8 | 9 | 
+
+`;
 
     const ticTacToeGrids = ticTacToe.createGridArray(3);
-    const { rowAndColumnNumbarMapBoxId } = ticTacToe.getBoxIdMapGridRowAndColumnNumber(ticTacToeGrids);
+    const { rowAndColumnNumberMapBoxId } = ticTacToe.getBoxIdMapGridRowAndColumnNumber(ticTacToeGrids);
 
-    const gridString = ticTacToe.printGrids({ ticTacToeGrids, rowAndColumnNumbarMapBoxId });
+    const gridString = ticTacToe.printGrids({ ticTacToeGrids, rowAndColumnNumberMapBoxId });
 
     expect(gridString).toBe(expectedGridString);
 });
