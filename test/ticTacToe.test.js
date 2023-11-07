@@ -62,7 +62,7 @@ ${chalk.blackBright('7')} | ${chalk.blackBright('8')} | ${chalk.blackBright('9')
     expect(gridString).toBe(expectedGridString);
 });
 
-test(`Should not validate the box number when wrong box number is given and validate if correct given. Grid Size 3`, () => {
+test(`Should not pass validation when wrong box number is given and should pass if correct given. Grid Size 3`, () => {
     const ticTacToe = new TicTacToe(3);
 
     expect(ticTacToe.validateBoxNumber(10)).toBe(false)
@@ -73,7 +73,7 @@ test(`Should not validate the box number when wrong box number is given and vali
     expect(ticTacToe.validateBoxNumber(9)).toBe(true)
 });
 
-test(`Should not validate the box number when already filled box number is given and validate when empty box number is given`, () => {
+test(`Should not pass the validation when already filled box number is given and should pass when an empty box number is given`, () => {
     const ticTacToe = new TicTacToe(3);
     ticTacToe.setBoxValue(0, 0, 'X')
     ticTacToe.setBoxValue(0, 1, 'X')
@@ -83,4 +83,149 @@ test(`Should not validate the box number when already filled box number is given
     expect(ticTacToe.validateBoxNumber(2)).toBe(false)
     expect(ticTacToe.validateBoxNumber(3)).toBe(false)
     expect(ticTacToe.validateBoxNumber(4)).toBe(true)
+});
+
+test(`First row filled tests`, () => {
+    const ticTacToe = new TicTacToe(3);
+
+    ticTacToe.setBoxValue(0, 0, 'X')
+    ticTacToe.setBoxValue(0, 1, 'X')
+    ticTacToe.setBoxValue(0, 2, 'X')
+
+    ticTacToe.setBoxValue(1, 0, 'O')
+    ticTacToe.setBoxValue(1, 1, 'O')
+
+    expect(ticTacToe.checkIsRowFilled('X')).toBe(true)
+});
+
+test(`Second row filled tests`, () => {
+    const ticTacToe = new TicTacToe(3);
+
+    ticTacToe.setBoxValue(1, 0, 'X')
+    ticTacToe.setBoxValue(1, 1, 'X')
+    ticTacToe.setBoxValue(1, 2, 'X')
+
+    ticTacToe.setBoxValue(0, 0, 'O')
+    ticTacToe.setBoxValue(0, 1, 'O')
+
+    expect(ticTacToe.checkIsRowFilled('X')).toBe(true)
+});
+
+test(`Third row filled tests`, () => {
+    const ticTacToe = new TicTacToe(3);
+
+    ticTacToe.setBoxValue(2, 0, 'X')
+    ticTacToe.setBoxValue(2, 1, 'X')
+    ticTacToe.setBoxValue(2, 2, 'X')
+
+    ticTacToe.setBoxValue(0, 0, 'O')
+    ticTacToe.setBoxValue(0, 1, 'O')
+
+    expect(ticTacToe.checkIsRowFilled('X')).toBe(true)
+});
+
+test(`First column filled tests`, () => {
+    const ticTacToe = new TicTacToe(3);
+
+    ticTacToe.setBoxValue(0, 0, 'X')
+    ticTacToe.setBoxValue(1, 0, 'X')
+    ticTacToe.setBoxValue(2, 0, 'X')
+
+    ticTacToe.setBoxValue(0, 1, 'O')
+    ticTacToe.setBoxValue(1, 1, 'O')
+
+    expect(ticTacToe.checkIsColumnFilled('X')).toBe(true)
+});
+
+test(`Second column filled tests`, () => {
+    const ticTacToe = new TicTacToe(3);
+
+    ticTacToe.setBoxValue(0, 1, 'X')
+    ticTacToe.setBoxValue(1, 1, 'X')
+    ticTacToe.setBoxValue(2, 1, 'X')
+
+    ticTacToe.setBoxValue(0, 0, 'O')
+    ticTacToe.setBoxValue(1, 0, 'O')
+
+    expect(ticTacToe.checkIsColumnFilled('X')).toBe(true)
+});
+
+test(`Third column filled tests`, () => {
+    const ticTacToe = new TicTacToe(3);
+
+    ticTacToe.setBoxValue(0, 2, 'X')
+    ticTacToe.setBoxValue(1, 2, 'X')
+    ticTacToe.setBoxValue(2, 2, 'X')
+
+    ticTacToe.setBoxValue(0, 0, 'O')
+    ticTacToe.setBoxValue(1, 0, 'O')
+
+    expect(ticTacToe.checkIsColumnFilled('X')).toBe(true)
+});
+
+test(`Left to right diagional filled tests`, () => {
+    const ticTacToe = new TicTacToe(3);
+
+    ticTacToe.setBoxValue(0, 0, 'X')
+    ticTacToe.setBoxValue(1, 1, 'X')
+    ticTacToe.setBoxValue(2, 2, 'X')
+
+    ticTacToe.setBoxValue(0, 1, 'O')
+    ticTacToe.setBoxValue(1, 0, 'O')
+
+    expect(ticTacToe.checkIsLeftToRightDiagnoalFilled('X')).toBe(true)
+});
+
+test(`Right to left diagional filled tests`, () => {
+    const ticTacToe = new TicTacToe(3);
+
+    ticTacToe.setBoxValue(0, 2, 'X')
+    ticTacToe.setBoxValue(1, 1, 'X')
+    ticTacToe.setBoxValue(2, 0, 'X')
+
+    ticTacToe.setBoxValue(0, 1, 'O')
+    ticTacToe.setBoxValue(1, 0, 'O')
+
+    expect(ticTacToe.checkIsRightToLeftDiagnoalFilled('X')).toBe(true)
+});
+
+test(`Game Draw Test`, () => {
+    const ticTacToe = new TicTacToe(3);
+
+    ticTacToe.setBoxValue(0, 0, 'X')
+    ticTacToe.setBoxValue(0, 1, 'O')
+    ticTacToe.setBoxValue(0, 2, 'X')
+
+    ticTacToe.setBoxValue(1, 0, 'X')
+    ticTacToe.setBoxValue(1, 1, 'O')
+    ticTacToe.setBoxValue(1, 2, 'X')
+
+    ticTacToe.setBoxValue(2, 0, 'O')
+    ticTacToe.setBoxValue(2, 1, 'X')
+    ticTacToe.setBoxValue(2, 2, 'O')
+
+    expect(ticTacToe.checkIsGamenDraw()).toBe(true)
+    expect(ticTacToe.checkIsPlayerWon('X')).toBe(false)
+    expect(ticTacToe.checkIsPlayerWon('O')).toBe(false)
+});
+
+test(`Game Win Test`, () => {
+    const ticTacToe = new TicTacToe(3);
+
+    ticTacToe.setBoxValue(0, 0, 'X')
+    ticTacToe.setBoxValue(0, 1, 'X')
+    ticTacToe.setBoxValue(0, 2, 'X')
+
+    ticTacToe.setBoxValue(1, 0, 'O')
+    ticTacToe.setBoxValue(1, 1, 'O')
+    ticTacToe.setBoxValue(1, 2, 'X')
+
+    ticTacToe.setBoxValue(2, 0, 'O')
+    ticTacToe.setBoxValue(2, 1, 'O')
+    ticTacToe.setBoxValue(2, 2, 'X')
+
+    expect(ticTacToe.checkIsPlayerWon('X')).toBe(true)
+    expect(ticTacToe.checkIsPlayerWon('O')).toBe(false)
+    expect(ticTacToe.checkIsGamenDraw()).toBe(true)
+
 });

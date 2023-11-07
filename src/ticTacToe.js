@@ -34,12 +34,89 @@ class TicTacToe {
             const boxNumber = await this.inputAndValidateBoxNumber(`${activePlayerName}'s Turn (Symbol - ${activeSymbol}). Please enter a box number : `)
             const rowAndColumnNumber = this.boxIdMapGridRowAndColumnNumber[boxNumber];
             this.setBoxValue(rowAndColumnNumber.row, rowAndColumnNumber.column, activeSymbol);
+            this.printGrids();
 
+            if (this.checkIsPlayerWon(activeSymbol)) {
+                console.log(`${activePlayerName} WON !! `)
+                break;
+            }
+
+            if (this.checkIsGamenDraw()) {
+                console.log(`Game Draw`)
+                break;
+            }
             // Change the player's turn
             activePlayer = activePlayer === 1 ? 2 : 1;
-
-            this.printGrids();
         }
+    }
+
+    checkIsPlayerWon(activeSymbol) {
+        if (
+            this.checkIsRowFilled(activeSymbol) ||
+            this.checkIsColumnFilled(activeSymbol) ||
+            this.checkIsLeftToRightDiagnoalFilled(activeSymbol) ||
+            this.checkIsRightToLeftDiagnoalFilled(activeSymbol)
+        ) return true
+
+
+        return false;
+    }
+
+    checkIsRowFilled(activeSymbol) {
+        for (let row = 0; row < this.ticTacToeGrids.length; row++) {
+
+            let isRowFilled = true;
+            for (let column = 0; column < this.ticTacToeGrids[row].length; column++) {
+                if (this.ticTacToeGrids[row][column] !== activeSymbol) {
+                    isRowFilled = false;
+                    break;
+                }
+            }
+            if (isRowFilled) return true;
+        }
+        return false;
+    }
+
+    checkIsColumnFilled(activeSymbol) {
+        for (let column = 0; column < this.ticTacToeGrids.length; column++) {
+
+            let isColumnFilled = true;
+            for (let row = 0; row < this.ticTacToeGrids.length; row++) {
+                if (this.ticTacToeGrids[row][column] !== activeSymbol) {
+                    isColumnFilled = false;
+                    break;
+                }
+            }
+            if (isColumnFilled) return true;
+        }
+        return false;
+    }
+
+    checkIsLeftToRightDiagnoalFilled(activeSymbol) {
+        for (let i = 0; i < this.ticTacToeGrids.length; i++) {
+            if (this.ticTacToeGrids[i][i] !== activeSymbol) return false;
+        }
+
+        return true;
+    }
+
+    checkIsRightToLeftDiagnoalFilled(activeSymbol) {
+        for (let row = 0; row < this.ticTacToeGrids.length; row++) {
+            const column = this.ticTacToeGrids.length - 1 - row;
+            if (this.ticTacToeGrids[row][column] !== activeSymbol) return false;
+        }
+
+        return true;
+    }
+
+    checkIsGamenDraw() {
+        for (let row = 0; row < this.ticTacToeGrids.length; row++) {
+            for (let column = 0; column < this.ticTacToeGrids[row].length; column++) {
+                if (!this.ticTacToeGrids[row][column]) return false;
+            }
+        }
+
+        return true;
     }
 
     setBoxValue(row, column, symbol) {
