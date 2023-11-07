@@ -41,7 +41,7 @@ class TicTacToe {
                 break;
             }
 
-            if (this.checkIsGamenDraw()) {
+            if (this.checkIsGameDraw()) {
                 console.log(`Game Draw`)
                 break;
             }
@@ -109,7 +109,7 @@ class TicTacToe {
         return true;
     }
 
-    checkIsGamenDraw() {
+    checkIsGameDraw() {
         for (let row = 0; row < this.ticTacToeGrids.length; row++) {
             for (let column = 0; column < this.ticTacToeGrids[row].length; column++) {
                 if (!this.ticTacToeGrids[row][column]) return false;
