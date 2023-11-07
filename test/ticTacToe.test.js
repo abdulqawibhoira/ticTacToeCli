@@ -11,7 +11,7 @@ test('Creates a 2d array for a grid size 3', () => {
 
 test(`Generates a boxId for each grid's box and map it against a row and column number of a box. Grid size 3`, () => {
     const ticTacToeGrids = ticTacToe.createGridArray(3);
-    const boxIdMapGridRowAndColumnNumber = ticTacToe.getBoxIdMapGridRowAndColumnNumber(ticTacToeGrids);
+    const { boxIdMapGridRowAndColumnNumber } = ticTacToe.getBoxIdMapGridRowAndColumnNumber(ticTacToeGrids);
 
     expect(boxIdMapGridRowAndColumnNumber[1]).toMatchObject({ row: 0, column: 0 });
     expect(boxIdMapGridRowAndColumnNumber[2]).toMatchObject({ row: 0, column: 1 });
@@ -23,4 +23,19 @@ test(`Generates a boxId for each grid's box and map it against a row and column 
     expect(boxIdMapGridRowAndColumnNumber[8]).toMatchObject({ row: 2, column: 1 });
     expect(boxIdMapGridRowAndColumnNumber[9]).toMatchObject({ row: 2, column: 2 });
 
+});
+
+test(`Prints an empty Grid. Grid with just boxIds`, () => {
+    const expectedGridString = `1 | 2 | 3 | 
+
+4 | 5 | 6 | 
+
+7 | 8 | 9 | `;
+
+    const ticTacToeGrids = ticTacToe.createGridArray(3);
+    const { rowAndColumnNumbarMapBoxId } = ticTacToe.getBoxIdMapGridRowAndColumnNumber(ticTacToeGrids);
+
+    const gridString = ticTacToe.printGrids({ ticTacToeGrids, rowAndColumnNumbarMapBoxId });
+
+    expect(gridString).toBe(expectedGridString);
 });
