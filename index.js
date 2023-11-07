@@ -1,3 +1,5 @@
-const { startTicTacToe } = require('./src/ticTacToe')
+const { TicTacToe } = require('./src/ticTacToe')
+const { GRID_SIZE } = require('./src/constants');
 
-startTicTacToe();
+const ticTacToe = new TicTacToe(GRID_SIZE);
+ticTacToe.startTicTacToe();

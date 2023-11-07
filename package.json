@@ -5,11 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start":"node index.js"
+    "start": "node index.js"
   },
   "author": "Addul Qawi",
   "license": "ISC",
   "devDependencies": {
     "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "chalk": "4.1.2"
   }
 }

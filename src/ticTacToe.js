@@ -1,83 +1,130 @@
-const { inputAndValidateUserName, inputAndValidateBoxNumber } = require('./userInputHelper')
-const { GRID_SIZE } = require('./constants');
+const { getInputFromUser } = require('./userInputHelper')
+const chalk = require('chalk');
 
-const startTicTacToe = async () => {
-    const player1Name = await inputAndValidateUserName(`Enter player 1 name (Symbol ${getSymbolByPlayerNumber(1)}) : `)
-    const player2Name = await inputAndValidateUserName(`Enter player 2 name (Symbol ${getSymbolByPlayerNumber(2)}) : `)
-    console.log(`\n`);
-
-    const ticTacToeGrids = createGridArray(GRID_SIZE);
-    const { boxIdMapGridRowAndColumnNumber, rowAndColumnNumberMapBoxId } = getBoxIdMapGridRowAndColumnNumber(ticTacToeGrids);
-
-    printGrids({ ticTacToeGrids, rowAndColumnNumberMapBoxId });
-
-    let activePlayer = 1;
-    while (true) {
-        const activeSymbol = getSymbolByPlayerNumber(activePlayer);
-        const activePlayerName = activePlayer == 1 ? player1Name : player2Name;
-
-        const boxNumber = await inputAndValidateBoxNumber({
-            instruction: `${activePlayerName}'s Turn (Symbol - ${activeSymbol}). Please enter box number : `,
-            boxIdMapGridRowAndColumnNumber,
-            ticTacToeGrids
-        })
-        const rowAndColumnNumber = boxIdMapGridRowAndColumnNumber[boxNumber];
-        ticTacToeGrids[rowAndColumnNumber.row][rowAndColumnNumber.column] = activeSymbol;
-
-        activePlayer = activePlayer === 1 ? 2 : 1;
-
-        printGrids({ ticTacToeGrids, rowAndColumnNumberMapBoxId });
-    }
-}
-
-const createGridArray = (gridSize) => {
-    const ticTacToeGrids = Array(gridSize);
-
-    for (let i = 0; i < ticTacToeGrids.length; i++) {
-        ticTacToeGrids[i] = Array(gridSize).fill(null)
+class TicTacToe {
+    constructor(gridSize) {
+        this.createGridArray(gridSize);
+        this.generateBoxIdMapGridRowAndColumnNumber();
     }
 
-    return ticTacToeGrids;
-}
+    get getTicTacToeGrids() {
+        return this.ticTacToeGrids
+    }
 
-const getSymbolByPlayerNumber = (playerNumber) => playerNumber === 1 ? 'X' : 'O'
+    get getBoxIdMapGridRowAndColumnNumber() {
+        return this.boxIdMapGridRowAndColumnNumber
+    }
 
-const getBoxIdMapGridRowAndColumnNumber = (ticTacToeGrids) => {
-    const boxIdMapGridRowAndColumnNumber = {};
-    const rowAndColumnNumberMapBoxId = {};
+    get getRowAndColumnNumberMapBoxId() {
+        return this.rowAndColumnNumberMapBoxId
+    }
 
-    let boxId = 1;
-    for (let row = 0; row < ticTacToeGrids.length; row++) {
-        for (let column = 0; column < ticTacToeGrids[row].length; column++) {
-            const newBoxId = boxId++;
-            boxIdMapGridRowAndColumnNumber[newBoxId] = { row, column };
-            rowAndColumnNumberMapBoxId[`${row}#${column}`] = newBoxId
+    async startTicTacToe() {
+        this.player1Name = await this.inputAndValidateUserName(`Enter player 1 name (Symbol ${this.getSymbolByPlayerNumber(1)}) : `)
+        this.player2Name = await this.inputAndValidateUserName(`Enter player 2 name (Symbol ${this.getSymbolByPlayerNumber(2)}) : `)
+        console.log(`\n`);
+
+        this.printGrids();
+
+        let activePlayer = 1;
+        while (true) {
+            const activeSymbol = this.getSymbolByPlayerNumber(activePlayer);
+            const activePlayerName = activePlayer == 1 ? this.player1Name : this.player2Name;
+
+            const boxNumber = await this.inputAndValidateBoxNumber(`${activePlayerName}'s Turn (Symbol - ${activeSymbol}). Please enter a box number : `)
+            const rowAndColumnNumber = this.boxIdMapGridRowAndColumnNumber[boxNumber];
+            this.setBoxValue(rowAndColumnNumber.row, rowAndColumnNumber.column, activeSymbol);
+
+            // Change the player's turn
+            activePlayer = activePlayer === 1 ? 2 : 1;
+
+            this.printGrids();
         }
     }
-    return { boxIdMapGridRowAndColumnNumber, rowAndColumnNumberMapBoxId }
-}
 
-const printGrids = (options) => {
-    const { ticTacToeGrids, rowAndColumnNumberMapBoxId } = options;
-
-    let gridString = ``;
-
-    for (let row = 0; row < ticTacToeGrids.length; row++) {
-        for (let column = 0; column < ticTacToeGrids[row].length; column++) {
-            gridString += `${ticTacToeGrids[row][column] || rowAndColumnNumberMapBoxId[`${row}#${column}`]} | `
-        }
-        gridString += `\n`
-        gridString += `\n`
+    setBoxValue(row, column, symbol) {
+        this.ticTacToeGrids[row][column] = symbol;
     }
 
-    console.log(gridString)
-    console.log(`Box with numbers are not filled. Enter the box number to fill a particular box \n`)
-    return gridString;
+    createGridArray(gridSize) {
+        this.ticTacToeGrids = Array(gridSize);
+
+        for (let i = 0; i < this.ticTacToeGrids.length; i++) {
+            this.ticTacToeGrids[i] = Array(gridSize).fill(null)
+        }
+    }
+
+    getSymbolByPlayerNumber(playerNumber) {
+        return playerNumber === 1 ? 'X' : 'O'
+    }
+
+    generateBoxIdMapGridRowAndColumnNumber() {
+        this.boxIdMapGridRowAndColumnNumber = {};
+        this.rowAndColumnNumberMapBoxId = {};
+
+        let boxId = 1;
+        for (let row = 0; row < this.ticTacToeGrids.length; row++) {
+            for (let column = 0; column < this.ticTacToeGrids[row].length; column++) {
+                const newBoxId = boxId++;
+                this.boxIdMapGridRowAndColumnNumber[newBoxId] = { row, column };
+                this.rowAndColumnNumberMapBoxId[`${row}#${column}`] = newBoxId
+            }
+        }
+    }
+
+    printGrids() {
+        let gridString = ``;
+
+        for (let row = 0; row < this.ticTacToeGrids.length; row++) {
+            for (let column = 0; column < this.ticTacToeGrids[row].length; column++) {
+                const gridValue = this.ticTacToeGrids[row][column] || this.rowAndColumnNumberMapBoxId[`${row}#${column}`];
+                const isFilled = this.ticTacToeGrids[row][column] || false;
+
+                gridString += `${isFilled ? chalk.green(gridValue) : chalk.blackBright(gridValue)} | `
+            }
+            gridString += `\n`
+            gridString += `\n`
+        }
+
+        console.log(gridString)
+        return gridString;
+    }
+
+    async inputAndValidateUserName(instruction) {
+        let playerName = null;
+        while (true) {
+            playerName = await getInputFromUser(instruction);
+            if (!playerName.trim()) {
+                console.log('Invalid Name.');
+                continue;
+            }
+            break;
+        }
+        return playerName;
+    }
+
+    async inputAndValidateBoxNumber(instruction) {
+        let boxNumber = null;
+        while (true) {
+            boxNumber = await getInputFromUser(instruction);
+            if (!this.validateBoxNumber(boxNumber)) {
+                console.log('Invalid Box Number.');
+                continue;
+            }
+            break;
+        }
+        return boxNumber;
+    }
+
+    validateBoxNumber(boxNumber) {
+        const rowAndColumnNumber = this.boxIdMapGridRowAndColumnNumber[boxNumber];
+        if (!rowAndColumnNumber) return false;
+        if (this.ticTacToeGrids[rowAndColumnNumber.row][rowAndColumnNumber.column]) return false;
+
+        return true;
+    }
 }
 
 module.exports = {
-    startTicTacToe,
-    createGridArray,
-    getBoxIdMapGridRowAndColumnNumber,
-    printGrids
+    TicTacToe
 }
