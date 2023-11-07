@@ -9,8 +9,9 @@ The program first asks for both the player's name sequentially.
 Once the names are entered, it prints the empty grid with the unique box numbers assigned to each box in the grid.
 
 First turn is given to a player 1. Players take turns making thier moves.
-Player 1 = X
-Player 2 = O
+
+Player 1 = X.
+Player 2 = O.
 
 On each player's turn, the program ask for a box number on which the player want to make his move. If a box number entered is invalid or illegal, program prints the error and ask them to enter again.
 
